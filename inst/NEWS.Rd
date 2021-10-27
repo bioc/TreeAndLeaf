@@ -2,7 +2,7 @@
 \title{TreeAndLeaf News}
 \encoding{UTF-8}
 
-\section{Version 1.5.1}
+\section{Version 1.5.1}{
   \itemize{
     \item Object transformation functions condensed into the `treeAndLeaf` function, to be made automatically [2020-08-24].
     \item TreeAndLeaf function became more automated.
