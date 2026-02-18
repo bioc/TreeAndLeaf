@@ -1,19 +1,24 @@
 Package: TreeAndLeaf
 Type: Package
 Title: Displaying binary trees with focus on dendrogram leaves
-Version: 1.23.0
-Description: The TreeAndLeaf package combines unrooted and force-directed graph algorithms in order to layout binary trees, aiming to represent multiple layers of information onto dendrogram leaves.
-Author: Leonardo W. Kume, Luis E. A. Rizzardi, Milena A. Cardoso, Mauro A. A. Castro
-Maintainer: Milena A. Cardoso <milenandreuzo@gmail.com>
+Version: 1.23.1
+Authors@R: 
+    c(person("Milena", "Cardoso", role = c("aut", "cre"),
+              email = "milenandreuzo@gmail.com"),
+      person("Luis", "Rizzardi", role = "aut"),
+      person("Leonardo", "Kume", role = "aut"),
+      person("Sheyla", "Trefflich", role = "ctb"),
+      person("Clarice", "Groeneveld", role = "ctb"),
+      person("Mauro", "Castro", role = c("aut"),
+              email = "mauro.a.castro@gmail.com",
+              comment = c(ORCID = "0000-0003-4942-8131"))
+      )
 Depends: R(>= 4.0)
-Imports: RedeR(>= 1.40.4), igraph, ape
-Suggests: knitr, rmarkdown, BiocStyle, RUnit, BiocGenerics, stringr,
-        geneplast, ggtree, ggplot2, dplyr, dendextend, RColorBrewer
+Imports: RedeR(>= 3.7.1), igraph, ape
+Suggests: knitr, rmarkdown, BiocStyle, RUnit, BiocGenerics, stringr, ggtree, ggplot2, dplyr, dendextend, RColorBrewer
+Description: TreeAndLeaf implements a hybrid layout strategy that enhances leaf-level visualization in dendrograms. By integrating force-directed graph and tree layout algorithms, it enables projection of multiple layers of information onto graph–tree diagrams.
 License: Artistic-2.0
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
-biocViews: Infrastructure, GraphAndNetwork, Software, Network,
-        Visualization, DataRepresentation
-NeedsCompilation: no
-Packaged: 2021-08-28 15:56:06 UTC; maac
+biocViews: Infrastructure, GraphAndNetwork, Software, Network, Visualization, DataRepresentation

@@ -11,7 +11,7 @@ tal.checks <- function(name, para){
                     call.=FALSE)
         }
     } else if(identical(name, "obj")){
-        if (!any(class(para)%in%c("hclust","phylo","ggtree")))
+        if (!any(class(para) %in% c("hclust","phylo","ggtree")))
             stop("'obj' must be a 'hclust', 'phylo', or 'ggtree' objects!", 
                  call.=FALSE)
     } else {

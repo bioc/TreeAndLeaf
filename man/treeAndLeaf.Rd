@@ -18,13 +18,12 @@ igraph objects.
 }
 \examples{
 library(RedeR)
-rdp <- RedPort()
 hc <- hclust(dist(USArrests), "ave")
 tal <- treeAndLeaf(hc)
 
 \dontrun{
-calld(rdp)
-addGraph(obj=rdp, tal)
+startRedeR()
+addGraphToRedeR(tal)
 }
 
 }
