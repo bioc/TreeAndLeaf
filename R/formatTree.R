@@ -39,8 +39,8 @@ formatTree <- function(tal, theme = 1){
 .setSizeTheme <- function(tal){
     sz <- sum(V(tal)$isLeaf)
     sz <- sqrt(sz)
-    igraph::V(tal)$nodeFontSize <- ceiling(min(max(15,sz),75))
-    igraph::V(tal)$nodeFontSize[!V(tal)$isLeaf] <- 1
+    igraph::V(tal)$nodeLabelSize <- ceiling(min(max(15,sz),75))
+    igraph::V(tal)$nodeLabelSize[!V(tal)$isLeaf] <- 1
     igraph::V(tal)$nodeSize <- ceiling(min(max(15,sz),100))
     igraph::V(tal)$nodeSize[!V(tal)$isLeaf] <- ceiling(min(max(5,sz/6),15))
     igraph::E(tal)$edgeWidth <- ceiling(min(max(15,sz/2),50))
@@ -58,11 +58,11 @@ formatTree <- function(tal, theme = 1){
             igraph::V(tal)$nodeLineColor <- "#D4A59A")
     #Set node font color
     switch (theme,
-            igraph::V(tal)$nodeFontColor <- "#000000",
-            igraph::V(tal)$nodeFontColor <- "#05386B",
-            igraph::V(tal)$nodeFontColor <- "#1F2833",
-            igraph::V(tal)$nodeFontColor <- "#5C2018",
-            igraph::V(tal)$nodeFontColor <- "#5C2018")
+            igraph::V(tal)$nodeLabelColor <- "#000000",
+            igraph::V(tal)$nodeLabelColor <- "#05386B",
+            igraph::V(tal)$nodeLabelColor <- "#1F2833",
+            igraph::V(tal)$nodeLabelColor <- "#5C2018",
+            igraph::V(tal)$nodeLabelColor <- "#5C2018")
     #Set the edge color
     switch (theme,
             igraph::E(tal)$edgeColor <- "#000000",

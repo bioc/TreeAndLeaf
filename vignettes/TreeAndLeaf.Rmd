@@ -123,9 +123,9 @@ tal <- att.mapv(g = tal, dat = USArrests, refcol = 0)
 ```
 
 Now we use the `att.setv()` wrapper function to set attributes in the 
-*tree-and-leaf* diagram. To see all attributes available to display in the 
-**RedeR** application, please type `?addGraph` in the R console. The graph
-attributes can also be customized following **igraph** syntax rules.
+*tree-and-leaf* diagram. For all attributes available to display in the 
+**RedeR** application, see `vignette("RedeR")` (Tables 1, 2 and 3). 
+The graph attributes can also be customized following **igraph** syntax rules.
 
 ```{r, eval=FALSE}
 #--- Set graph attributes using the 'att.setv' wrapper function
@@ -136,7 +136,7 @@ tal <- att.setv(g = tal, from = "UrbanPop", to = "nodeSize",
                 xlim = c(10, 50, 5), nquant = 5)
 
 #--- Set graph attributes using 'att.addv' and 'att.adde' functions
-tal <- att.addv(tal, "nodeFontSize", value = 15, index = V(tal)$isLeaf)
+tal <- att.addv(tal, "nodeLabelSize", value = 15, index = V(tal)$isLeaf)
 tal <- att.adde(tal, "edgeWidth", value = 3)
 ```
 
@@ -149,17 +149,16 @@ force-directed algorithm applied to the terminal nodes of the tree.
 
 ```{r, eval=FALSE}
 #--- Call RedeR application
-rdp <- RedPort()
-calld(rdp)
-resetd(rdp)
+startRedeR()
+resetRedeR()
 ```
 
 ```{r, eval=FALSE}
 #--- Send the tree-and-leaf to the interactive R/Java interface
-addGraph(obj = rdp, g = tal, gzoom=75)
+addGraphToRedeR(g = tal, zoom=75)
 
 #--- Call 'relax' to fine-tune the leaf nodes
-relax(rdp, p1=25, p2=200, p3=5, p5=5, ps=TRUE)
+relaxRedeR(p1=25, p2=200, p3=5, p5=5)
 ```
 
 At this point, the user can interact with the layout process to achieve the 
@@ -173,10 +172,8 @@ adjusted by providing more or less room for the spatial configuration
 
 ```{r, eval=FALSE}
 #--- Add legends
-addLegend.color(obj = rdp, tal, title = "Murder Rate", 
-                position = "topright")
-addLegend.size(obj = rdp, tal, title = "Urban Population Size",
-               position = "bottomright")
+addLegendToRedeR(tal, type = "nodecolor")
+addLegendToRedeR(tal, type = "nodesize")
 ```
 
 <p align="center">
@@ -196,21 +193,20 @@ and then we apply the *tree-and-leaf* transformation.
 
 ```{r, eval=FALSE, message=FALSE}
 #-- Libraries required in this section:
-#-- TreeAndLeaf(>=1.4.2), RedeR(>=1.40.4), Bioconductor >= 3.13 (R >= 4.0)
 # BiocManager::install(c("TreeAndLeaf","RedeR","ggtree))
 # install.packages(c("igraph","ape", "dendextend", "dplyr", 
 #                    "ggplot2", "RColorBrewer"))
 
 #-- Load packages
-library("TreeAndLeaf")
-library("RedeR")
-library("igraph")
-library("ape")
-library("ggtree")
-library("dendextend")
-library("dplyr")
-library("ggplot2")
-library("RColorBrewer")
+library(TreeAndLeaf)
+library(RedeR)
+library(igraph)
+library(ape)
+library(ggtree)
+library(dendextend)
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
 ```
 
 ## Building and plotting a *phylo* tree with *ggtree* layouts
@@ -252,7 +248,7 @@ tal <- att.setv(g = tal, from = "size", to = "nodeSize",
                 xlim = c(10, 50, 5))
 
 #--- Set graph attributes using 'att.addv' and 'att.adde' functions
-tal <- att.addv(tal, "nodeFontSize", value = 1)
+tal <- att.addv(tal, "nodeLabelSize", value = 1)
 tal <- att.addv(tal, "nodeLineWidth", value = 0)
 tal <- att.addv(tal, "nodeColor", value = "black", index=!V(tal)$isLeaf)
 tal <- att.adde(tal, "edgeWidth", value = 3)
@@ -261,27 +257,23 @@ tal <- att.adde(tal, "edgeColor", value = "black")
 
 ```{r, eval=FALSE}
 #--- Call RedeR application
-rdp <- RedPort()
-calld(rdp)
-resetd(rdp)
+startRedeR()
+resetRedeR()
 ```
 
 ```{r, eval=FALSE}
 #--- Send the tree-and-leaf to the interactive R/Java interface
-addGraph(obj = rdp, g = tal, gzoom=50)
+addGraphToRedeR(g = tal, zoom=50)
 
 #--- Select inner nodes, preventing them from relaxing
-selectNodes(rdp, V(tal)$name[!V(tal)$isLeaf], anchor=TRUE)
+selectNodes(V(tal)$name[!V(tal)$isLeaf], anchor=TRUE)
 
 #--- Call 'relax' to fine-tune the leaf nodes
-relax(rdp, p1=25, p2=100, p3=5, p5=1, p8=5, ps=TRUE)
+relaxRedeR(p1=25, p2=100, p3=5, p5=1, p8=5)
 
 #--- Add legends
-addLegend.color(obj = rdp, tal, title = "Group", 
-                position = "topright",vertical=T)
-addLegend.size(obj = rdp, tal, title = "Size", 
-               position = "topleft", 
-               vertical=T, dxtitle=10)
+addLegendToRedeR(tal, type = "nodecolor", title = "Group", stretch = 0.2)
+addLegendToRedeR(tal, type = "nodesize", title = "Size")
 ```
 
 <p align="center">
@@ -304,7 +296,6 @@ in the **RedeR** application.
 
 ```{r, eval=FALSE, message=FALSE}
 #-- Libraries required in this section:
-#-- TreeAndLeaf(>=1.4.2), RedeR(>=1.40.4), Bioconductor >= 3.13 (R >= 4.0)
 # BiocManager::install(c("TreeAndLeaf","RedeR"))
 # install.packages(c("igraph", "RColorBrewer"))
 
@@ -348,7 +339,7 @@ tal <- att.setv(g = tal, from = "depth", to = "nodeSize",
                 xlim = c(40, 120, 20), nquant = 5)
 
 #--- Set graph attributes using 'att.addv' and 'att.adde' functions
-tal <- att.addv(tal, "nodeFontSize", value = 1)
+tal <- att.addv(tal, "nodeLabelSize", value = 1)
 tal <- att.adde(tal, "edgeWidth", value = 10)
 ```
 
@@ -359,127 +350,29 @@ force-directed algorithm applied to the terminal nodes of the tree.
 
 ```{r, eval=FALSE}
 #--- Call RedeR application
-rdp <- RedPort()
-calld(rdp)
-resetd(rdp)
+startRedeR()
+resetRedeR()
 ```
 
 ```{r, eval=FALSE}
 #--- Send the tree-and-leaf to the interactive R/Java interface
-addGraph(obj = rdp, g = tal, gzoom=10)
+addGraphToRedeR(g = tal, zoom=10)
 
 #--- Call 'relax' to fine-tune the leaf nodes
-relax(rdp, p1=25, p2=200, p3=10, p4=100, p5=10, ps=TRUE)
+relaxRedeR(p1=25, p2=200, p3=10, p4=100, p5=10)
 ```
 
 ```{r, eval=FALSE}
 #--- Add legends
-addLegend.color(obj = rdp, tal, title = "Richter Magnitude",
-                position = "bottomright")
-addLegend.size(obj = rdp, tal, title = "Depth (km)")
+addLegendToRedeR(tal, type = "nodecolor", title = "Richter Magnitude")
+addLegendToRedeR(tal, type = "nodesize", title = "Depth (km)")
 ```
 
 <p align="center">
 <img height="400" src="QuakesTree.png">
 </p>
 
-# Case Study 2: visualizing a phylogenetic tree
-
-## Context
-
-This section generates a *tree-and-leaf* diagram from a pre-computed `phylo` 
-tree object. We will use a phylogenetic tree listing 121 eukaryotes, available 
-from the **geneplast** package.
-
-## Package and data requirements
-
-```{r, eval=TRUE, message=FALSE}
-#-- Libraries required in this section:
-#-- TreeAndLeaf(>=1.4.2), RedeR(>=1.40.4), Bioconductor >= 3.13 (R >= 4.0)
-# BiocManager::install(c("TreeAndLeaf","RedeR","geneplast))
-# install.packages(c("igraph","ape", "RColorBrewer"))
-
-#-- Load packages
-library(TreeAndLeaf)
-library(RedeR)
-library(igraph)
-library(ape)
-library(geneplast)
-library(RColorBrewer)
-```
-
-```{r, eval=TRUE, message=FALSE}
-#-- Load data and plot the phylogenetic tree
-data("spdata")
-data("gpdata.gs")
-plot(phyloTree)
-```
-
-## Building and plotting a *tree-and-leaf* from a phylogenetic tree
-
-```{r, eval=FALSE}
-#--- Drop organisms not listed in the 'spdata' annotation
-phyloTree$tip.label <- as.character(phyloTree$tip.label)
-tokeep <- phyloTree$tip.label %in% spdata$tax_id
-pruned.phylo <- drop.tip(phyloTree, phyloTree$tip.label[!tokeep])
-```
-
-```{r, eval=FALSE}
-#-- Convert the phylogenetic tree into a 'tree-and-leaf' object
-tal <- treeAndLeaf(pruned.phylo)
-
-#--- Map attributes to the tree-and-leaf
-#Note: 'refcol = 1' indicates that 'dat' col 1 will be used as mapping IDs
-tal <- att.mapv(g = tal, dat = spdata, refcol = 1)
-
-#--- Set graph attributes using the 'att.setv' wrapper function
-pal <- brewer.pal(9, "Purples")
-tal <- att.setv(g = tal, from = "genome_size_Mb",
-                to = "nodeSize", xlim = c(120, 250, 1), nquant = 5)
-tal <- att.setv (g = tal, from = "proteins",
-                 to = "nodeColor", nquant = 5,
-                 cols = pal, na.col = "black")
-```
-
-```{r, eval=FALSE}
-#--- Add graph attributes using 'att.adde' and 'att.addv' functions
-tal <- att.addv(tal, "nodeFontSize", value = 10)
-tal <- att.adde(tal, "edgeWidth", value = 20)
-
-# Set species names to 'nodeAlias' attribute
-tal <- att.setv(tal, from = "sp_name", to = "nodeAlias")
-
-# Select a few names to highlight in the graph
-tal <- att.addv(tal, "nodeFontSize", value = 100, 
-       filter=list('name'=sample(pruned.phylo$tip.label,30)))
-tal <- att.addv(tal, "nodeFontSize", value = 100, 
-                filter=list('name'="9606")) #Homo sapiens
-```
-
-```{r, eval=FALSE}
-# Call RedeR
-rdp <- RedPort()
-calld(rdp)
-resetd(rdp)
-
-#--- Send the tree-and-leaf to the interactive R/Java interface
-addGraph(obj = rdp, g = tal, gzoom=10)
-
-#--- Call 'relax' to fine-tune the leaf nodes
-relax(rdp, ps=TRUE)
-```
-
-```{r, eval=FALSE}
-#--- Add legends
-addLegend.color(rdp, tal, title = "Proteome Size (n)")
-addLegend.size(rdp, tal, title = "Genome Size (Mb)")
-```
-
-<p align="center">
-<img height="400" src="PhyloPurple.png">
-</p>
-
-# Case Study 3: visualizing a non-binary tree
+# Case Study 2: visualizing a non-binary tree
 
 ## Context
 
@@ -492,16 +385,14 @@ which some inner nodes have more than two children, or non-binary nodes.
 
 ```{r, eval=FALSE}
 #-- Libraries required in this section:
-#-- TreeAndLeaf(>=1.4.2), RedeR(>=1.40.4), Bioconductor >= 3.13 (R >= 4.0)
-# BiocManager::install(c("TreeAndLeaf","RedeR","geneplast))
-# install.packages(c("igraph","ape", "RColorBrewer"))
+# BiocManager::install(c("TreeAndLeaf","RedeR"))
+# install.packages(c("igraph", "ape", "RColorBrewer"))
 
 #-- Load packages
 library(TreeAndLeaf)
 library(RedeR)
 library(igraph)
 library(ape)
-library(geneplast)
 library(RColorBrewer)
 ```
 
@@ -529,35 +420,34 @@ tal <- treeAndLeaf(pruned.phylo)
 tal <- tal %>%
   att.mapv(dat = spdata, refcol = 1) %>%
   att.setv(from = "genome_size_Mb", to = "nodeSize",
-           xlim = c(120, 250, 1), nquant = 5) %>%
+           xlim = c(10, 50, 1), nquant = 5) %>%
   att.setv(from = "proteins", to = "nodeColor", nquant = 5,
            cols = brewer.pal(9, "Blues"), na.col = "black") %>%
-  att.setv(from = "sp_name", to = "nodeAlias") %>%
+  att.setv(from = "sp_name", to = "nodeLabel") %>%
   att.adde(to = "edgeWidth", value = 20) %>%
-  att.addv(to = "nodeFontSize", value = 10) %>%
-  att.addv(to = "nodeFontSize", value = 100,
+  att.addv(to = "nodeLabelSize", value = 1) %>%
+  att.addv(to = "nodeLabelSize", value = 20,
       filter = list("name" = sample(pruned.phylo$tip.label, 30))) %>%
-  att.addv(to = "nodeFontSize", value = 100, 
+  att.addv(to = "nodeLabelSize", value = 20, 
            filter = list("name" = "9606"))
 ```
 
 ```{r, eval=FALSE}
 # Call RedeR
-rdp <- RedPort()
-calld(rdp)
-resetd(rdp)
+startRedeR()
+resetRedeR()
 
 #--- Send the tree-and-leaf to the interactive R/Java interface
-addGraph(obj = rdp, g = tal, gzoom=5)
+addGraphToRedeR(g = tal, zoom=50)
 
 #--- Call 'relax' to fine-tune the leaf nodes
-relax(rdp, ps=TRUE)
+relaxRedeR(p1=25, p2=200, p3=10, p4=100, p5=10)
 ```
 
 ```{r, eval=FALSE}
 #--- Add legends
-addLegend.color(rdp, tal, title = "Proteome Size (n)")
-addLegend.size(rdp, tal, title = "Genome size (Mb)")
+addLegendToRedeR(tal, type = "nodecolor", title = "Proteome Size (n)", stretch = 0.5)
+addLegendToRedeR(tal, type = "nodesize", title = "Genome size (Mb)")
 ```
 
 <p align="center">
