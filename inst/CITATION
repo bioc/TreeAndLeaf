@@ -1,6 +1,5 @@
 citEntry(entry = "Article",
-  author = "Milena A Cardoso and Luis E A Rizzardi and Leonardo W Kume and Clarice S Groeneveld and Sheyla Trefflich 
-  and Diego A A Morais and Rodrigo J S Dalmolin and Bruce A J Ponder and Kerstin B Meyer and Mauro A A Castro",
+  author = "Milena A Cardoso and Luis E A Rizzardi and Leonardo W Kume and Clarice S Groeneveld and Sheyla Trefflich and Diego A A Morais and Rodrigo J S Dalmolin and Bruce A J Ponder and Kerstin B Meyer and Mauro A A Castro",
   title = "TreeAndLeaf: an R/Bioconductor package for graphs and trees with focus on the leaves.",
   journal = "Bioinformatics",
   year = "2021",
@@ -8,8 +7,5 @@ citEntry(entry = "Article",
   pages = "1463-1464",
   number = "5",
   doi = "10.1093/bioinformatics/btab819",
-  textVersion = 
-  paste("Cardoso MA, Rizzardi LEA, Kume W, et al.", 
-	"TreeAndLeaf: an R/Bioconductor package for graphs and trees with focus on the leaves.",
-	"Bioinformatics 38:1463-1464, 2021.", sep=" ")
+  textVersion = "Cardoso MA, Rizzardi LEA, Kume W, et al. TreeAndLeaf: an R/Bioconductor package for graphs and trees with focus on the leaves. Bioinformatics 38:1463-1464, 2021."
 )
