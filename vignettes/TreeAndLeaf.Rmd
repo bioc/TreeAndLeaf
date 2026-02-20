@@ -2,11 +2,17 @@
 title: '*TreeAndLeaf*: A graph layout strategy for binary trees with focus on the leaves'
 author: 'Milena A Cardoso, Luis E A Rizzardi, Leonardo W Kume, Sheyla Trefflich, Clarice Groeneveld, Mauro A A Castro'
 date: "`r BiocStyle::doc_date()`"
-abstract: "The **TreeAndLeaf** package combines tree and force-directed layout algorithms for drawing binary trees, aiming to represent multiple layers of information onto the leaves."
+abstract: "Dendrograms are classical diagrams for visualizing binary trees. Although effective for representing hierarchical relationships, they provide limited space for displaying information associated with leaf elements, particularly in large trees. *TreeAndLeaf* implements a hybrid layout strategy that emphasizes leaf-level representation in tree diagrams. By integrating force-directed graph and tree layout algorithms, *TreeAndLeaf* enables the projection of multiple layers of information onto a graph–tree visualization."
 package: "`r BiocStyle::pkg_ver('TreeAndLeaf')`"
 output:
-    BiocStyle::html_document:
-        css: custom.css
+  BiocStyle::html_document:
+    highlight: tango
+    md_extensions:  -smart
+    self_contained: yes
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    css: custom.css
 vignette: >
   %\VignetteIndexEntry{TreeAndLeaf: an graph layout to dendrograms.}
   %\VignetteEngine{knitr::rmarkdown}
@@ -39,9 +45,11 @@ leaves by combining tree and force-directed layout algorithms, shifting the
 focus of analysis to the leaves (**Figure 1B**). The package's workflow is 
 summarized in **Figure 1C**.
 
-<p align="center">
-<img width="1000" src="overview.png">
-</p>
+
+```{r fig_overview, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("overview.png")
+```
+
 **Figure 1**. **TreeAndLeaf** workflow summary. **(A,B)** The dendrogram in A 
 is used to construct the graph in B. **(C)** The main input for the **TreeAndLeaf** 
 package consists of a dendrogram, and then the package transforms the dendrogram 
@@ -70,10 +78,10 @@ application.
 # install.packages(c("igraph","RColorBrewer"))
 
 #-- Load packages
-library("TreeAndLeaf")
-library("RedeR")
-library("igraph")
-library("RColorBrewer")
+library(TreeAndLeaf)
+library(RedeR)
+library(igraph)
+library(RColorBrewer)
 ```
 
 ```{r, eval=TRUE, message=FALSE}
@@ -124,8 +132,8 @@ tal <- att.mapv(g = tal, dat = USArrests, refcol = 0)
 
 Now we use the `att.setv()` wrapper function to set attributes in the 
 *tree-and-leaf* diagram. For all attributes available to display in the 
-**RedeR** application, see `vignette("RedeR")` (Tables 1, 2 and 3). 
-The graph attributes can also be customized following **igraph** syntax rules.
+**RedeR** application, see the *command-line attributes* section 
+in `vignette("RedeR")`.
 
 ```{r, eval=FALSE}
 #--- Set graph attributes using the 'att.setv' wrapper function
@@ -176,9 +184,10 @@ addLegendToRedeR(tal, type = "nodecolor")
 addLegendToRedeR(tal, type = "nodesize")
 ```
 
-<p align="center">
-<img height="300" src="USAReds.png">
-</p>
+```{r figUSAReds, echo=FALSE, out.width = '80%'}
+knitr::include_graphics("USAReds.png")
+```
+
 
 # Setting the initial *tree-and-leaf* state with *ggtree* layouts
 
@@ -276,9 +285,9 @@ addLegendToRedeR(tal, type = "nodecolor", title = "Group", stretch = 0.2)
 addLegendToRedeR(tal, type = "nodesize", title = "Size")
 ```
 
-<p align="center">
-<img height="350" src="ggtree_tal.png">
-</p>
+```{r fig_ggtree_tal, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("ggtree_tal.png")
+```
 
 # Case Study 1: visualizing a large dendrogram
 
@@ -368,9 +377,11 @@ addLegendToRedeR(tal, type = "nodecolor", title = "Richter Magnitude")
 addLegendToRedeR(tal, type = "nodesize", title = "Depth (km)")
 ```
 
-<p align="center">
-<img height="400" src="QuakesTree.png">
-</p>
+
+```{r fig_QuakesTree, echo=FALSE, out.width = '90%'}
+knitr::include_graphics("QuakesTree.png")
+```
+
 
 # Case Study 2: visualizing a non-binary tree
 
@@ -405,14 +416,14 @@ data("phylo_tree")
 ```{r, eval=FALSE, message=FALSE}
 #--- Drop organisms not listed in the 'spdata' annotation
 tokeep <- phylo_tree$tip.label %in% spdata$tax_id
-pruned.phylo <- drop.tip(phylo_tree, phylo_tree$tip.label[!tokeep])
+phylo_tree <- drop.tip(phylo_tree, phylo_tree$tip.label[!tokeep])
 ```
 
 ## Building and plotting a *tree-and-leaf* for a non-binary tree
 
 ```{r, eval=FALSE}
 #-- Convert the phylogenetic tree into a 'tree-and-leaf' object
-tal <- treeAndLeaf(pruned.phylo)
+tal <- treeAndLeaf(phylo_tree)
 ```
 
 ```{r, eval=FALSE}
@@ -427,7 +438,7 @@ tal <- tal %>%
   att.adde(to = "edgeWidth", value = 20) %>%
   att.addv(to = "nodeLabelSize", value = 1) %>%
   att.addv(to = "nodeLabelSize", value = 20,
-      filter = list("name" = sample(pruned.phylo$tip.label, 30))) %>%
+      filter = list("name" = sample(phylo_tree$tip.label, 30))) %>%
   att.addv(to = "nodeLabelSize", value = 20, 
            filter = list("name" = "9606"))
 ```
@@ -450,9 +461,18 @@ addLegendToRedeR(tal, type = "nodecolor", title = "Proteome Size (n)", stretch =
 addLegendToRedeR(tal, type = "nodesize", title = "Genome size (Mb)")
 ```
 
-<p align="center">
-<img width="700" src="nBinPhylo.png">
-</p>
+
+```{r fig_nBinPhylo, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("nBinPhylo.png")
+```
+
+
+# Citation
+
+If you use *TreeAndLeaf*, please cite:
+
+* Cardoso MA, Rizzardi LEA, Kume LW, Groeneveld C, Trefflich S, Morais DAA, Dalmolin RJS, Ponder BAJ, Meyer KB, Castro MAA. "TreeAndLeaf: an R/Bioconductor package for graphs and trees with focus on the leaves." *Bioinformatics*, 38(5):1463-1464, 2022. [Doi:10.1093/bioinformatics/btab819](https://doi.org/10.1093/bioinformatics/btab819).
+
 
 # Session information
 

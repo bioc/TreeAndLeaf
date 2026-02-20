@@ -64,13 +64,11 @@ treeAndLeaf <- function(obj){
     V(gg)$y <- layout[,"y"]
     V(gg)$isLeaf <- V(gg)$name%in%coords$phylo$tip.label
     gg$centralVertex <- coords$centralVertex
-    #--- set edge weights
     if(!is.null(E(gg)$weight)) gg <- remove.edge.attribute(gg, "weight")
     if(!is.null(E(gg)$edgeWeight)) gg <- remove.edge.attribute(gg, "edgeWeight")
-    bt <- igraph::edge_betweenness(gg, directed = T)
+    bt <- igraph::edge_betweenness(gg, directed = TRUE)
     bt <- (1 - bt/max(bt))
     E(gg)$edgeWeight <- bt
-    #--- set node and font sizes
     V(gg)$nodeLabel <- V(gg)$name
     V(gg)$nodeSize <- 5
     V(gg)$nodeSize[V(gg)$isLeaf] <- 30
@@ -154,12 +152,12 @@ treeAndLeaf <- function(obj){
     yy <- xx <- numeric(Ntip + Nnode)
     axis <- angle <- numeric(Ntip + Nnode)
     angle[nodes[1]] <- 2*pi
-    for(i in 1:length(nodes)){
+    for(i in seq_len(length(nodes))){
         node <- nodes[i]
         ind <- which(edge[, 1] == node)
         sons <- edge[ind, 2]
         start <- axis[node] - angle[node]/2
-        for (j in 1:length(sons)) {
+        for (j in seq_len(length(sons))) {
             h <- edge.length[ind[j]]
             angle[sons[j]] <- alpha <- angle[node]*nb.sp[sons[j]]/nb.sp[node]
             axis[sons[j]] <- beta <- start + alpha/2
